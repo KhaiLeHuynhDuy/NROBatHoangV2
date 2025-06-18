@@ -372,4 +372,50 @@ public class PetService {
         pl.newpet.nPoint.setBasePoint();
         pl.newpet.nPoint.setFullHpMp();
     }
+    public void createPet_Vip1(Player player, boolean isChange, byte gender) {
+        byte limitPower;
+        if (isChange) {
+            limitPower = player.pet.nPoint.limitPower;
+            if (player.fusion.typeFusion != ConstPlayer.NON_FUSION) {
+                player.pet.unFusion();
+            }
+            ChangeMapService.gI().exitMap(player.pet);
+            player.pet.dispose();
+            player.pet = null;
+        } else {
+            limitPower = 1;
+        }
+        new Thread(() -> {
+            try {
+                Pet pet = new Pet(player);
+                pet.name = "$Gô ku SSJ5";
+                pet.gender = gender;
+                pet.id = -player.id;
+                pet.nPoint.power = 1500000;
+                pet.typePet = 26;
+                pet.nPoint.stamina = (short) 1000;
+                pet.nPoint.maxStamina = (short) Util.nextInt(1000, 10000);
+                pet.nPoint.hpg = Util.nextInt(4000, 10000);
+                pet.nPoint.mpg = Util.nextInt(4000, 10000);
+                pet.nPoint.dameg = Util.nextInt(300, 1000);
+                pet.nPoint.defg = Util.nextInt(300, 1000);
+                pet.nPoint.critg = 20;
+                for (int i = 0; i < 8; i++) {
+                    pet.inventory.itemsBody.add(ItemService.gI().createItemNull());
+                }
+                pet.playerSkill.skills.add(SkillUtil.createSkill(Util.nextInt(0, 2) * 2, 1));
+                for (int i = 0; i < 4; i++) {
+                    pet.playerSkill.skills.add(SkillUtil.createEmptySkill());
+                }
+                pet.nPoint.setFullHpMp();
+                player.pet = pet;
+                ;
+                player.pet.nPoint.limitPower = limitPower;
+                Thread.sleep(1000);
+                Service.gI().chatJustForMe(player, player.pet, "\b|1|Ta kẻ mạnh nhất vũ trụ ...");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 }

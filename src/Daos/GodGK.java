@@ -163,9 +163,9 @@ public class GodGK {
                             player.capYari = rs.getInt("cap_yari");
                             player.point_noel = rs.getInt("point_noel");
                             //khaile add
-                            player.canh_gioi = rs.getInt("canh_gioi");
-                            player.binh_canh = rs.getInt("binh_canh");
-                            player.dot_pha = rs.getByte("dot_pha");
+                            player.capTT = rs.getInt("canh_gioi");
+                            player.capCS = rs.getInt("binh_canh");
+                            player.dotpha = rs.getByte("dot_pha");
                             player.isUseTrucCoDan = rs.getBoolean("isUseTrucCoDan");
                             player.time_dd = rs.getLong("time_dd");
                             player.diemtichluy = rs.getInt("diemtichluy");

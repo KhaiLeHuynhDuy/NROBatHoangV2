@@ -100,8 +100,7 @@ public class CombineServiceNew {
     public final Npc baHatMit;
     private final Npc meoKarin;
     private final Npc whis_64;
-    private final Npc Giuma;
-    private final Npc whis_154;
+    
 
     private static CombineServiceNew i;
 
@@ -109,8 +108,7 @@ public class CombineServiceNew {
         this.baHatMit = NpcManager.getNpc(ConstNpc.BA_HAT_MIT);
         this.meoKarin = NpcManager.getNpc(ConstNpc.THAN_MEO_KARIN);
         this.whis_64 = NpcManager.getNpc(ConstNpc.WHIS);
-        this.Giuma = NpcManager.getNpc(ConstNpc.GIUMA_DAU_BO);
-        this.whis_154 = NpcManager.getNpc(ConstNpc.WHIS_154);
+       
     }
 
     public static CombineServiceNew gI() {

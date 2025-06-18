@@ -195,9 +195,10 @@ public class Player {
 
     public byte cFlag;
 //khaile add
-    public byte dot_pha;
-    public int binh_canh;
-    public int canh_gioi;
+    public PlayerEvent event;
+    public byte dotpha;
+    public int capCS;
+    public int capTT;
     public boolean isUseTrucCoDan;
     public int diemtichluy;
     public int sukien;
@@ -273,6 +274,7 @@ public class Player {
         achievement = new Achievement(this);
         traning = new Traning();
         satellite = new Satellite();
+        event = new PlayerEvent(this);
     }
 
     //--------------------------------------------------------------------------

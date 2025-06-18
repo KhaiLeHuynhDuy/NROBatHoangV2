@@ -821,7 +821,7 @@ public class PlayerDAO {
                         + "skills_shortcut = ?, diem_danh=?, diem_danh2=?, soi_boss=?, pointPvp=?, NguHanhSonPoint=?, "
                         + "cap_yari=?, data_offtrain =?, data_card=?,bill_data =?,vodaisinhtu = ?,bandokhobau=?,doanhtrai=?,conduongrandoc=?,data_achievement=?, data_luyentap = ?,ruonggo=?,point_noel= ?,chottop =?,dhtime=?, "
                         + "canh_gioi =?,binh_canh=?,dot_pha=?,isUseTrucCoDan=?,"
-                        + "time_dd =?, data_diem =?,diemtichluy =?,sukien =? "
+                        + "time_dd =?, data_diem =?,diemtichluy =?,sukien =?,event_point_boss=? "
                         + "where id = ?";
                 GirlkunDB.executeUpdate(query,
                         itemTimeSC,
@@ -868,14 +868,15 @@ public class PlayerDAO {
                         chottop,
                         dhtime,
                         //khaile add
-                        player.canh_gioi,
-                        player.binh_canh,
-                        player.dot_pha,
+                        player.capTT,
+                        player.capCS,
+                        player.dotpha,
                         player.isUseTrucCoDan,
                         player.time_dd,
                         data_diem,
                         player.diemtichluy,
                         player.sukien,
+                        player.event.getEventPointBoss(),
                         //end khaile add
                         player.id);
             } catch (Exception e) {

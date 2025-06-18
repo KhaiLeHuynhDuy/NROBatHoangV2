@@ -33,11 +33,11 @@ public class DotPhaService {
                 Service.gI().sendThongBaoOK(player, "Bạn chưa đạt giới hạn chỉ số của Trúc Cơ Cảnh để có thể đột phá!");
                 return;
             }
-            if (player.canh_gioi != 3) {
+            if (player.capTT != 3) {
                 Service.gI().sendThongBaoOK(player, "Lại độ thiên kiếp rồi tới đây đột phá!");
                 return;
             }
-            if (player.dot_pha != 0) {
+            if (player.dotpha != 0) {
                 Service.gI().sendThongBaoOK(player, "Bạn đã đột phá rồi, không thể thực hiện lại!");
                 return;
             }
@@ -49,7 +49,7 @@ public class DotPhaService {
                         Service.gI().sendThongBao(player, "Bạn không đủ Hồng ngọc để đột phá thành Pháp Tu");
                         return;
                     } else {
-                        player.dot_pha = 1; // Pháp Tu
+                        player.dotpha = 1; // Pháp Tu
                         player.nPoint.dameg = player.nPoint.dameg + 6_000_000;
                         player.nPoint.hpg = player.nPoint.hpg + 3_000_000;
                         player.nPoint.mpg = player.nPoint.mpg + 3_000_000;
@@ -64,7 +64,7 @@ public class DotPhaService {
                         Service.gI().sendThongBao(player, "Bạn không đủ Hồng ngọc để đột phá thành Pháp Tu");
                         return;
                     } else {
-                        player.dot_pha = 2; // Thể Tu
+                        player.dotpha = 2; // Thể Tu
                         player.nPoint.dameg = player.nPoint.dameg + 1_000_000;
                         player.nPoint.hpg = player.nPoint.hpg + 18_000_000;
                         player.nPoint.mpg = player.nPoint.mpg + 18_000_000;
@@ -77,7 +77,7 @@ public class DotPhaService {
                         Service.gI().sendThongBao(player, "Bạn không đủ COIN để đột phá thành Hồn Tu (cần 250k COIN)");
                         return;
                     } else {
-                        player.dot_pha = 3; // Hồn Tu
+                        player.dotpha = 3; // Hồn Tu
                         player.nPoint.dameg = player.nPoint.dameg + 10_000_000;
                         player.nPoint.defg = player.nPoint.defg + 10_000_000;
                         player.nPoint.hpg = player.nPoint.hpg + 10_000_000;

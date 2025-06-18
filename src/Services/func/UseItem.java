@@ -585,12 +585,426 @@ public class UseItem {
                             break;
 
                         }
+                        //khaile add
+                        case 1716://sukien he bai bien
+                            ruongkhobau(pl, item);
+                            break;
+
+                        //khaile add
+                        case 1698: { // linh tuu
+                            long amount = 5_000_000_000L;
+                            pl.nPoint.powerUp(amount);
+                            pl.nPoint.tiemNangUp(amount);
+                            PlayerService.gI().sendTNSM(pl, (byte) 2, amount);
+                            Service.gI().sendThongBao(pl, "Bạn nhận 5 tỷ tu vi");
+                            InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                            InventoryServiceNew.gI().sendItemBags(pl);
+                            break;
+                        }
+                        case 1668: // Hoàng Cực Đan
+                        {
+                            int requiredCap = 1;
+
+                            // Kiểm tra cảnh giới
+                            if (pl.capTT != requiredCap) {
+                                if (pl.capTT > requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới vượt mức Luyện Khí, không thể sử dụng Hoàng Cực Đan");
+                                } else {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới chưa đạt yêu cầu để sử dụng Hoàng Cực Đan");
+                                }
+                                break;
+                            }
+
+                            // Thiết lập giá trị tăng và giới hạn
+                            int damegIncrease = 10_000;
+                            int hpMpIncrease = damegIncrease * 3;
+
+                            int maxDameg = 3_600_000;
+                            int maxHpMp = maxDameg * 3;
+
+                            // Kiểm tra từng thuộc tính đã đạt max hay chưa
+                            boolean isDamegMaxed = (pl.nPoint.dameg >= maxDameg);
+                            boolean isHpMaxed = (pl.nPoint.hpg >= maxHpMp);
+                            boolean isMpMaxed = (pl.nPoint.mpg >= maxHpMp);
+
+                            // Nếu tất cả đều max thì không thể sử dụng
+                            if (isDamegMaxed && isHpMaxed && isMpMaxed) {
+                                Service.gI().sendThongBao(pl, "Đã đạt giới hạn tối đa, không thể sử dụng Hoàng Cực Đan");
+                                break;
+                            }
+
+                            // Tăng từng thuộc tính nếu chưa đạt max
+                            StringBuilder bonusMessage = new StringBuilder("Bạn nhận được: ");
+                            boolean receivedBonus = false;
+
+                            if (!isDamegMaxed) {
+                                long oldDameg = pl.nPoint.dameg;
+                                pl.nPoint.dameg = Math.min(pl.nPoint.dameg + damegIncrease, maxDameg);
+                                if (pl.nPoint.dameg > oldDameg) {
+                                    bonusMessage.append(String.format("SD +%d, ", damegIncrease));
+                                    receivedBonus = true;
+                                }
+                            }
+
+                            if (!isHpMaxed) {
+                                long oldHp = pl.nPoint.hpg;
+                                pl.nPoint.hpg = Math.min(pl.nPoint.hpg + hpMpIncrease, maxHpMp);
+                                if (pl.nPoint.hpg > oldHp) {
+                                    bonusMessage.append(String.format("HP +%d, ", hpMpIncrease));
+                                    receivedBonus = true;
+                                }
+                            }
+
+                            if (!isMpMaxed) {
+                                long oldMp = pl.nPoint.mpg;
+                                pl.nPoint.mpg = Math.min(pl.nPoint.mpg + hpMpIncrease, maxHpMp);
+                                if (pl.nPoint.mpg > oldMp) {
+                                    bonusMessage.append(String.format("KI +%d, ", hpMpIncrease));
+                                    receivedBonus = true;
+                                }
+                            }
+
+                            // Nếu có thuộc tính được tăng thì cập nhật
+                            if (receivedBonus) {
+                                // Xóa dấu ", " cuối cùng
+                                if (bonusMessage.length() > 0) {
+                                    bonusMessage.setLength(bonusMessage.length() - 2);
+                                }
+                                Service.gI().point(pl); // Cập nhật chỉ số
+                                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1); // Trừ item
+                                InventoryServiceNew.gI().sendItemBags(pl); // Gửi lại túi đồ
+                                Service.gI().sendThongBao(pl, bonusMessage.toString()); // Thông báo chi tiết
+                            } else {
+                                Service.gI().sendThongBao(pl, "Không thể tăng thêm thuộc tính do đã đạt giới hạn");
+                            }
+                            break;
+                        }
+                        case 1667: // Trúc Cơ Đan
+                        {
+                            int requiredCap = 1;
+                            int requiredBinhCanh = 3;
+
+                            // Kiểm tra cảnh giới và bình cảnh
+                            if (pl.capTT != requiredCap || pl.capCS != requiredBinhCanh) {
+                                if (pl.capTT < requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới chưa đạt yêu cầu để sử dụng");
+                                } else if (pl.capTT > requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới vượt mức yêu cầu để sử dụng");
+                                } else if (pl.capCS != requiredBinhCanh) {
+                                    Service.gI().sendThongBao(pl, "Bình cảnh chưa đạt yêu cầu để sử dụng");
+                                }
+                                break;
+                            }
+
+                            // Thiết lập giá trị
+                            int requiredDame = 3_600_000;
+                            int requiredHpKi = requiredDame * 3;
+
+                            int damegIncrease = 1_000_000;
+                            int hpMpIncrease = damegIncrease * 3;
+
+                            int maxDameg = 4_600_000;
+                            int maxHpMp = maxDameg * 3;
+
+                            // Kiểm tra điều kiện
+                            boolean atExactThreshold = (pl.nPoint.dameg == requiredDame)
+                                    && (pl.nPoint.hpg == requiredHpKi)
+                                    && (pl.nPoint.mpg == requiredHpKi);
+
+                            boolean alreadyMaxed = (pl.nPoint.dameg >= maxDameg)
+                                    || (pl.nPoint.hpg >= maxHpMp)
+                                    || (pl.nPoint.mpg >= maxHpMp);
+
+                            boolean notEligible = (pl.nPoint.dameg < requiredDame)
+                                    || (pl.nPoint.hpg < requiredHpKi)
+                                    || (pl.nPoint.mpg < requiredHpKi);
+
+                            // Xử lý logic
+                            if (notEligible) {
+                                Service.gI().sendThongBao(pl, "Chưa xong luyện khí mà đòi trúc cơ à mày !!!");
+                                break;
+                            }
+                            if (alreadyMaxed) {
+                                Service.gI().sendThongBao(pl, "Đã đạt giới hạn, không thể sử dụng");
+                                break;
+                            }
+                            if (!atExactThreshold) {
+                                Service.gI().sendThongBao(pl, "Cần đạt chính xác " + requiredDame + " SD và " + requiredHpKi + " HP/KI");
+                                break;
+                            }
+
+                            // Tăng chỉ số
+                            pl.nPoint.dameg = Math.min(pl.nPoint.dameg + damegIncrease, maxDameg);
+                            pl.nPoint.hpg = Math.min(pl.nPoint.hpg + hpMpIncrease, maxHpMp);
+                            pl.nPoint.mpg = Math.min(pl.nPoint.mpg + hpMpIncrease, maxHpMp);
+
+                            // Đánh dấu đã dùng Trúc Cơ Đan
+                            pl.isUseTrucCoDan = true;
+
+                            // Cập nhật
+                            Service.gI().point(pl);
+                            InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                            InventoryServiceNew.gI().sendItemBags(pl);
+                            Service.gI().sendThongBao(pl, "Đột phá Trúc Cơ thành công! Nhận được: SD +1tr, HP/KI +3tr");
+                            break;
+                        }
+                        case 1664:// truc co so ky
+                        {
+                            int requiredCap = 2;
+                            int requiredBinhCanh = 0;
+                            if (pl.capTT != requiredCap || pl.capCS != requiredBinhCanh) {
+                                if (pl.capTT < requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới chưa đạt yêu cầu để sử dụng Long Tủy Đan");
+                                } else if (pl.capTT > requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới vượt mức yêu cầu để sử dụng Long Tủy Đan");
+                                } else if (pl.capCS != requiredBinhCanh) {
+                                    Service.gI().sendThongBao(pl, "Bình cảnh chưa đạt yêu cầu để sử dụng Long Tủy Đan");
+                                }
+                                break;
+                            }
+                            if (pl.capTT == requiredCap && pl.capCS == requiredBinhCanh) {
+                                int requiredDame = 3_600_000;
+                                int requiredHpKi = requiredDame * 3;
+
+                                int damegIncrease = 50_000;
+                                int hpMpIncrease = damegIncrease * 3;
+
+                                int maxDameg;
+                                int maxHpMp;
+                                if (pl.isUseTrucCoDan) {
+                                    maxDameg = 7_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                } else {
+                                    maxDameg = 6_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                }
+                                boolean notEligible = pl.nPoint.dameg < requiredDame
+                                        || pl.nPoint.hpg < requiredHpKi
+                                        || pl.nPoint.mpg < requiredHpKi;
+
+                                if (notEligible) {
+                                    Service.gI().sendThongBao(pl, "Éo dùng được đâu em, lo mà về tu luyện tiếp !!!");
+                                    break;
+                                }
+                                // Kiểm tra nếu đã vượt ngưỡng yêu cầu
+                                boolean alreadyBeyond = pl.nPoint.dameg >= maxDameg
+                                        || pl.nPoint.hpg >= maxHpMp
+                                        || pl.nPoint.mpg >= maxHpMp;
+
+                                if (alreadyBeyond) {
+                                    Service.gI().sendThongBao(pl, "Đạt giới hạn Trúc Cơ sơ kỳ rồi em!! Đột phá bình cảnh đi !!!");
+                                    break;
+                                }
+                                pl.nPoint.dameg = Math.min(pl.nPoint.dameg + damegIncrease, maxDameg);
+                                pl.nPoint.hpg = Math.min(pl.nPoint.hpg + hpMpIncrease, maxHpMp);
+                                pl.nPoint.mpg = Math.min(pl.nPoint.mpg + hpMpIncrease, maxHpMp);
+                                Service.gI().point(pl);
+                                Service.gI().sendThongBao(pl, "Bạn nhận được SD, HP và KI");
+                                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                                InventoryServiceNew.gI().sendItemBags(pl);
+                                break;
+                            }
+                        }
+                        case 1665: {// truc co trung ky
+                            int requiredCap = 2;
+                            int requiredBinhCanh = 1;
+
+                            if (pl.capTT != requiredCap || pl.capCS != requiredBinhCanh) {
+                                if (pl.capTT < requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới chưa đạt yêu cầu để sử dụng Chân Nguyên Đan");
+                                } else if (pl.capTT > requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới vượt mức yêu cầu để sử dụng Chân Nguyên Đan");
+                                } else if (pl.capCS != requiredBinhCanh) {
+                                    Service.gI().sendThongBao(pl, "Bình cảnh chưa đạt yêu cầu để sử dụng Chân Nguyên Đan");
+                                }
+                                break;
+                            }
+                            if (pl.capTT == requiredCap && pl.capCS == requiredBinhCanh) {
+                                int requiredDame = 6_000_000;
+                                int requiredHpKi = requiredDame * 3;
+
+                                int damegIncrease = 50_000;
+                                int hpMpIncrease = damegIncrease * 3;
+
+                                int maxDameg;
+                                int maxHpMp;
+                                if (pl.isUseTrucCoDan) {
+                                    maxDameg = 13_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                } else {
+                                    maxDameg = 12_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                }
+
+                                boolean notEligible = pl.nPoint.dameg < requiredDame
+                                        || pl.nPoint.hpg < requiredHpKi
+                                        || pl.nPoint.mpg < requiredHpKi;
+
+                                if (notEligible) {
+                                    Service.gI().sendThongBao(pl, "Éo dùng được đâu em, lo mà về tu luyện tiếp !!!");
+                                    break;
+                                }
+                                // Kiểm tra nếu đã vượt ngưỡng yêu cầu
+                                boolean alreadyBeyond = pl.nPoint.dameg >= maxDameg
+                                        || pl.nPoint.hpg >= maxHpMp
+                                        || pl.nPoint.mpg >= maxHpMp;
+
+                                if (alreadyBeyond) {
+                                    Service.gI().sendThongBao(pl, "Đạt giới hạn Trúc Cơ trung kỳ rồi em!! Đột phá bình cảnh đi !!!");
+                                    break;
+                                }
+                                pl.nPoint.dameg = Math.min(pl.nPoint.dameg + damegIncrease, maxDameg);
+                                pl.nPoint.hpg = Math.min(pl.nPoint.hpg + hpMpIncrease, maxHpMp);
+                                pl.nPoint.mpg = Math.min(pl.nPoint.mpg + hpMpIncrease, maxHpMp);
+                                Service.gI().point(pl);
+                                Service.gI().sendThongBao(pl, "Bạn nhận được SD, HP và KI");
+                                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                                InventoryServiceNew.gI().sendItemBags(pl);
+                                break;
+                            }
+                        }
+                        case 1666: {// truc co hau ky
+                            int requiredCap = 2;
+                            int requiredBinhCanh = 2;
+                            if (pl.capTT != requiredCap || pl.capCS != requiredBinhCanh) {
+                                if (pl.capTT < requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới chưa đạt yêu cầu để sử dụng Ngũ Hành Ngưng Đan");
+                                } else if (pl.capTT > requiredCap) {
+                                    Service.gI().sendThongBao(pl, "Cảnh giới vượt mức yêu cầu để sử dụng Ngũ Hành Ngưng Đan");
+                                } else if (pl.capCS != requiredBinhCanh) {
+                                    Service.gI().sendThongBao(pl, "Bình cảnh chưa đạt yêu cầu để sử dụng Ngũ Hành Ngưng Đan");
+                                }
+                                break;
+                            }
+                            if (pl.capTT == requiredCap && pl.capCS == requiredBinhCanh) {
+                                int requiredDame = 12_000_000;
+                                int requiredHpKi = requiredDame * 3;
+
+                                int damegIncrease = 50_000;
+                                int hpMpIncrease = damegIncrease * 3;
+
+                                int maxDameg;
+                                int maxHpMp;
+                                if (pl.isUseTrucCoDan) {
+                                    maxDameg = 19_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                } else {
+                                    maxDameg = 18_000_000;
+                                    maxHpMp = maxDameg * 3;
+                                }
+
+                                boolean notEligible = pl.nPoint.dameg < requiredDame
+                                        || pl.nPoint.hpg < requiredHpKi
+                                        || pl.nPoint.mpg < requiredHpKi;
+
+                                if (notEligible) {
+                                    Service.gI().sendThongBao(pl, "Éo dùng được đâu em, lo mà về tu luyện tiếp !!!");
+                                    return;
+                                }
+                                // Kiểm tra nếu đã vượt ngưỡng yêu cầu
+                                boolean alreadyBeyond = pl.nPoint.dameg >= maxDameg
+                                        || pl.nPoint.hpg >= maxHpMp
+                                        || pl.nPoint.mpg >= maxHpMp;
+
+                                if (alreadyBeyond) {
+                                    Service.gI().sendThongBao(pl, "Đạt giới hạn Trúc Cơ hậu kỳ rồi em!! Đột phá bình cảnh đi !!!");
+                                    return;
+                                }
+                                pl.nPoint.dameg = Math.min(pl.nPoint.dameg + damegIncrease, maxDameg);
+                                pl.nPoint.hpg = Math.min(pl.nPoint.hpg + hpMpIncrease, maxHpMp);
+                                pl.nPoint.mpg = Math.min(pl.nPoint.mpg + hpMpIncrease, maxHpMp);
+                                Service.gI().point(pl);
+                                Service.gI().sendThongBao(pl, "Bạn nhận được SD, HP và KI");
+                                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                                InventoryServiceNew.gI().sendItemBags(pl);
+                                break;
+                            }
+                        }
+                        case 1708: {
+                            if (pl.dotpha != 3 && !pl.isAdmin()) {
+                                Service.gI().sendThongBaoOK(pl, "Có Bug không đó :3");
+                                PlayerService.gI().banPlayer((pl));
+                                Service.gI().sendThongBao(pl, "Bạn bị ban thành công");
+                                return;
+                            } else {
+                                ChangeMapService.gI().changeMapBySpaceShip(pl, 222, -1, 552);
+                            }
+                            break;
+                        }
+                        case 1568: {
+                            if (pl.pet == null) {
+                                Service.gI().sendThongBaoOK(pl, "Có đệ mới dùng được");
+                                break;
+                            } else {
+                                PetService.gI().createPet_Vip1(pl, pl.pet != null, pl.gender);
+                                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                                InventoryServiceNew.gI().sendItemBags(pl);
+                                break;
+                            }
+
+                        }
+                        case 1569: {
+                            Item newItem = ItemService.gI().createNewItem((short) 1275, 1);
+                            newItem.itemOptions.add(new ItemOption(50, 30));
+                            newItem.itemOptions.add(new ItemOption(77, 30));
+                            newItem.itemOptions.add(new ItemOption(103, 30));
+                            newItem.itemOptions.add(new ItemOption(30, 1));
+                            InventoryServiceNew.gI().addItemBag(pl, newItem);
+                            break;
+                        }
+                        case 1570: {
+                            break;
+                        }
+                        case 1571: {
+                            break;
+                        }
+                        case 1572: {
+                            break;
+                        }
+                        case 1573: {
+                            break;
+                        }
+                        //end khaile add
                     }
                     break;
             }
             InventoryServiceNew.gI().sendItemBags(pl);
         } else {
             Service.gI().sendThongBaoOK(pl, "Sức mạnh không đủ yêu cầu");
+        }
+    }
+
+    private void ruongkhobau(Player player, Item item) {
+        if (InventoryServiceNew.gI().getCountEmptyBag(player) > 1) {
+            int[] vp = {1099,
+                1100,
+                1101,
+                1102, 16};
+            int[] vpVip = {1709, 1710, 1630, 1502};
+            Item it = null;
+            short[] icon = new short[2];
+            icon[0] = item.template.iconID;
+            if (Util.isTrue(90, 100)) {
+                it = ItemService.gI().createNewItem((short) vp[Util.nextInt(0, vp.length - 1)]);
+                it.quantity = 1;
+            } else {
+                it = ItemService.gI().createNewItem((short) vpVip[Util.nextInt(0, vpVip.length - 1)]);
+                it.quantity = 1;
+                it.itemOptions.add(new ItemOption(50, Util.nextInt(0, 70)));
+                it.itemOptions.add(new ItemOption(77, Util.nextInt(0, 70)));
+                it.itemOptions.add(new ItemOption(103, Util.nextInt(0, 70)));
+                if (Util.isTrue(95, 100)) {
+                    it.itemOptions.add(new ItemOption(93, Util.nextInt(1, 7)));
+                }
+            }
+            InventoryServiceNew.gI().addItemBag(player, it);
+            icon[1] = it.template.iconID;
+            InventoryServiceNew.gI().subQuantityItemsBag(player, item, 1);
+            InventoryServiceNew.gI().sendItemBags(player);
+            CombineServiceNew.gI().sendEffectOpenItem(player, icon[0], icon[1]);
+            Service.gI().sendThongBao(player, "Chúc mừng bạn nhận được " + it.template.name);
+        } else {
+            Service.gI().sendThongBao(player, "Hàng trang đã đầy");
         }
     }
 

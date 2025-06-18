@@ -51,21 +51,21 @@
 //
 //    public void process(Player player, int times) {
 //        try {
-//            if (player.canh_gioi >= MAX_CapTuTien) {
+//            if (player.capTT >= MAX_CapTuTien) {
 //                Service.gI().sendThongBao(player, "Bạn đã đạt cảnh giới tối đa");
 //                return;
 //            }
-//            if (player.canh_gioi > 0 && player.binh_canh != 3) {
+//            if (player.capTT > 0 && player.capCS != 3) {
 //                Service.gI().sendThongBao(player, "Bạn chưa đạt đỉnh phong không thể độ kiếp");
 //                return;
 //            }
 //
-//            int initialLevel = player.canh_gioi;
+//            int initialLevel = player.capTT;
 //            int totalItemsUsed = 0;
 //            int successCount = 0;
 //
 //            for (int i = 0; i < times; i++) {
-//                int currentLevel = player.canh_gioi;
+//                int currentLevel = player.capTT;
 //                if (currentLevel >= MAX_CapTuTien) {
 //                    break;
 //                }
@@ -98,8 +98,8 @@
 //                boolean success = rand.nextFloat(100) < SUCCESS_RATE[currentLevel];
 //
 //                if (success) {
-//                    player.canh_gioi = (byte) targetLevel;
-//                    player.binh_canh = 0;
+//                    player.capTT = (byte) targetLevel;
+//                    player.capCS = 0;
 //                    int newplayerpower = 1_500_000;
 //                    long oldplayerpower = player.nPoint.power;
 //                    long subplayerpower = newplayerpower - oldplayerpower;
@@ -120,7 +120,7 @@
 //                    + "- Đã dùng: %,d Thỏi vàng\n",
 //                    times,
 //                    getRealNameCanhGioi(player, initialLevel),
-//                    getRealNameCanhGioi(player, player.canh_gioi),
+//                    getRealNameCanhGioi(player, player.capTT),
 //                    totalItemsUsed
 //            );
 //
@@ -205,11 +205,11 @@ public class DoKiepService {
             boolean stoppedDueToLackItem = false;
 
             for (int i = 0; i < times; i++) {
-                if (player.canh_gioi >= MAX_CAP_TU_TIEN) {
+                if (player.capTT >= MAX_CAP_TU_TIEN) {
                     break;
                 }
 
-                int level = player.canh_gioi;
+                int level = player.capTT;
                 int requiredItems = ITEM_REQUIRE[level];
                 Item item = findItem(player);
 
@@ -263,17 +263,17 @@ public class DoKiepService {
     }
 
     public boolean canProcess(Player player) {
-        if (player.canh_gioi >= MAX_CAP_TU_TIEN) {
+        if (player.capTT >= MAX_CAP_TU_TIEN) {
             Service.gI().sendThongBaoOK(player, "Bạn đã đạt cảnh giới tối đa");
             return false;
         }
 
-        if (player.canh_gioi > 0 && player.binh_canh != 3) {
+        if (player.capTT > 0 && player.capCS != 3) {
             Service.gI().sendThongBaoOK(player, "Bạn chưa đạt đỉnh phong để độ kiếp");
             return false;
         }
 
-        int level = player.canh_gioi;
+        int level = player.capTT;
         int requiredItems = ITEM_REQUIRE[level];
         Item goldBar = findItem(player);
         if (goldBar == null) {
@@ -300,8 +300,8 @@ public class DoKiepService {
     }
 
     private void levelUp(Player player) {
-        player.canh_gioi++;
-        player.binh_canh = 0;
+        player.capTT++;
+        player.capCS = 0;
 
         int newplayerpower = 1_500_000;
         long oldplayerpower = player.nPoint.power;

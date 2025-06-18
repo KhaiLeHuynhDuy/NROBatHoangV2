@@ -639,8 +639,8 @@ public class NPoint {
             this.tlNeDon += 25;
         }
 
-        // ======= Bonus né đòn từ đột phá (Pháp Tu - dot_pha = 1) =======
-        if (this.player != null && this.player.dot_pha == 1) {
+        // ======= Bonus né đòn từ đột phá (Pháp Tu - dotpha = 1) =======
+        if (this.player != null && this.player.dotpha == 1) {
             this.tlNeDon += 15;
         }
 

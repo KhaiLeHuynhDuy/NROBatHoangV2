@@ -1203,7 +1203,7 @@ public class SkillService {
 
     private void phanSatThuong(Player nguoiDanh, Player nguoiBiDanh, long dame) {
         int percentPST = nguoiBiDanh.nPoint.tlPST;
-        if (nguoiBiDanh.dot_pha == 2) {
+        if (nguoiBiDanh.dotpha == 2) {
             percentPST += 20;
         }
 

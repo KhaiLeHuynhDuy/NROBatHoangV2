@@ -5598,8 +5598,8 @@ public class NpcFactory {
         int avatar = Manager.NPC_TEMPLATES.get(tempId).avatar;
         try {
             switch (tempId) {
-                case ConstNpc.UNKOWN:
-                    return unkonw(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.UNKOWN:
+//                    return unkonw(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GHI_DANH:
                     return GhiDanh(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.TRUNG_LINH_THU:
@@ -5610,10 +5610,10 @@ public class NpcFactory {
                     return quyLaoKame(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.POPO:
                     return popo(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.SHOP_BIP:
-                    return shopvip(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.TAI_XIU:
-                    return taixiu(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.SHOP_BIP:
+//                    return shopvip(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.TAI_XIU:
+//                    return taixiu(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.TRUONG_LAO_GURU:
                     return truongLaoGuru(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.VUA_VEGETA:
@@ -5624,8 +5624,8 @@ public class NpcFactory {
                     return ongGohan_ongMoori_ongParagus(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BUNMA:
                     return bulmaQK(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.TOPPO:
-                    return toppo(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.TOPPO:
+//                    return toppo(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DUA_HAU:
                     return duahau(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DENDE:
@@ -5644,14 +5644,14 @@ public class NpcFactory {
                     return uron(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BA_HAT_MIT:
                     return baHatMit(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.SHOP_TAN_THU:
-                    return shopTanThu(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.SHOP_TAN_THU:
+//                    return shopTanThu(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.TAPION:
                     return tapion(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.CHI_CHI:
-                    return chiChi(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.CAY_THONG:
-                    return cayThong(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.CHI_CHI:
+//                    return chiChi(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.CAY_THONG:
+//                    return cayThong(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.RUONG_DO:
                     return ruongDo(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DAU_THAN:
@@ -5664,16 +5664,16 @@ public class NpcFactory {
                     return thuongDe(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.CUA_HANG_KY_GUI:
                     return kyGui(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.YARITOBE_DO:
-                    return Yaritobe_do(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.GIUMA_DAU_BO:
-                    return Giuma(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.Monaito:
-                    return monaito(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.YARITOBE_DO:
+//                    return Yaritobe_do(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.GIUMA_DAU_BO:
+//                    return Giuma(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.Monaito:
+//                    return monaito(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.VADOS:
                     return vados(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.KHI_DAU_MOI:
-                    return khidaumoi(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.KHI_DAU_MOI:
+//                    return khidaumoi(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.THAN_VU_TRU:
                     return thanVuTru(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.KIBIT:
@@ -5690,8 +5690,8 @@ public class NpcFactory {
                     return DocNhan(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.QUA_TRUNG:
                     return quaTrung(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.LE_TAN:
-                    return leTan(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.LE_TAN:
+//                    return leTan(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.QUOC_VUONG:
                     return quocVuong(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BUNMA_TL:
@@ -5710,10 +5710,10 @@ public class NpcFactory {
                     return whis(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.WHIS_154:
                     return whis154(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.PVP:
-                    return pvp(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.BERRY:
-                    return berry(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.PVP:
+//                    return pvp(mapId, status, cx, cy, tempId, avatar);
+//                case ConstNpc.BERRY:
+//                    return berry(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BILL:
                     return bill(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BO_MONG:
@@ -5722,7 +5722,7 @@ public class NpcFactory {
                     return karin(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GOKU_SSJ:
                     return gokuSSJ_1(mapId, status, cx, cy, tempId, avatar);
-                case ConstNpc.GOKU_SSJ_2:
+                case ConstNpc.GOKU_SSJ2:
                     return gokuSSJ_2(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DUONG_TANG:
                     return duongtank(mapId, status, cx, cy, tempId, avatar);
