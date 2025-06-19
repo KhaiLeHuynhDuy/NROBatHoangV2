@@ -61,6 +61,11 @@ public class Util {
         return num.format(power);
     }
 
+    public static String getFormatNumber(long hp) {
+
+        return Util.num.format(hp);
+    }
+
     public static String chiaNho(long j) {
         long j2 = (j / 1000) + 1;
         String str = "";

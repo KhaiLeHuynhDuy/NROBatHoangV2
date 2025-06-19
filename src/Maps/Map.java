@@ -18,10 +18,10 @@ import ListMap.Gas;
 import ListMap.GasService;
 import ListMap.MapMaBu;
 import ListMap.MapSatan;
-import Mob.BigBosss.GauTuongCuop;
-import Mob.BigBosss.Hirudegarn;
-import Mob.BigBosss.RobotBaoVe;
-import Mob.BigBosss.VuaBachTuoc;
+import Mob.BigBossMob.GauTuongCuop;
+import Mob.BigBossMob.Hirudegarn;
+import Mob.BigBossMob.RobotBaoVe;
+import Mob.BigBossMob.VuaBachTuoc;
 
 import Mob.Mob;
 import NPC.Npc;

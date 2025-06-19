@@ -170,6 +170,7 @@ public class GodGK {
                             player.time_dd = rs.getLong("time_dd");
                             player.diemtichluy = rs.getInt("diemtichluy");
                             player.sukien = rs.getInt("sukien");
+                            player.event.setEventPointBoss(rs.getInt("event_point_boss"));
                             //end khaile add
                             long now = System.currentTimeMillis();
                             long thoiGianOffline = now - session.lastTimeOff;

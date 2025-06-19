@@ -28,6 +28,9 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.Set;
 import network.SessionManager;
+import Services.DoKiepService;
+import Services.BinhCanhService;
+import Services.DotPhaService;
 
 /**
  *
@@ -52,15 +55,6 @@ public class Command {
 
     public boolean check(Player player, String text) {
         if (player.isAdmin()) {
-            if (text.equals("tt")) {
-                NpcService.gI().createMenuConMeo(player, ConstNpc.TTMEM, 11039,
-                        "|7|Nhân vật: " + player.name
-                        + "\n|8|Số Lần Chuyển Sinh: " + player.NguHanhSonPoint
-                        + "\n|3|Số dư: " + Util.formatNumber(player.getSession().coinBar)
-                        + "\n|2|[Trạng thái tài khoản : " + (!player.getSession().actived ? " Chưa MTV]" : " Đã MTV]")
-                        + "\n|7|Nhiệm vụ hiện tại: " + player.playerTask.taskMain.name,
-                        new String[]{"Chi Tiết", "Thông Tin\n Sư Phụ", "Thông Tin\n Đệ Tử", "Đóng"});
-            }
             if (player.getSession() != null && player.isAdmin()) {
                 if (text.equals("logskill")) {
                     Service.gI().sendThongBao(player, player.playerSkill.skillSelect.coolDown + "");
@@ -111,10 +105,10 @@ public class Command {
                 DecimalFormat decimalFormat = new DecimalFormat("0.00");
                 String cpuUsage = decimalFormat.format(operatingSystemMXBean.getSystemCpuLoad() * 100);
                 String usedPhysicalMemoryStr = decimalFormat.format((double) usedPhysicalMemory / (1024 * 1024 * 1024));
-                if (text.equals("ad")) {
-                    NpcService.gI().createMenuConMeo(player, ConstNpc.MENU_ADMIN, -1, "|7| ADMIN \n •⊹٭Ngọc Rồng One Puch Man٭⊹•\b|2| •⊹٭♥Bùi Kim Trường♥٭⊹•\b|4| Người Đang Chơi: " + Client.gI().getPlayers().size() + "\n" + "|8|Current thread: " + (Thread.activeCount())
+                if (text.equals("admin")) {
+                    NpcService.gI().createMenuConMeo(player, ConstNpc.MENU_ADMIN, -1, "|7| ADMIN \n •⊹٭Ngọc Rồng One Puch Man٭⊹•\b|4| Người Đang Chơi: " + Client.gI().getPlayers().size() + "\n" + "|8|Current thread: " + (Thread.activeCount())
                             + " : SeeSion " + SessionManager.gI().getSessions().size()
-                            + "\n|7|CPU : " + cpuUsage + "/100%" + " ♥ " + "RAM : " + usedPhysicalMemoryStr 
+                            + "\n|7|CPU : " + cpuUsage + "/100%" + " ♥ " + "RAM : " + usedPhysicalMemoryStr
                             + "\n|7|Time start server: " + ServerManager.timeStart,
                             "Menu Admin", "Call Boss", "Buff Item", "Đóng");
 
@@ -158,43 +152,21 @@ public class Command {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else if (text.startsWith("i")) {
-                    try {
-                        String[] item = text.replace("i", "").split(" ");
-                        if (Short.parseShort(item[0]) <= 2118) {
-                            Item it = ItemService.gI().createNewItem((short) Short.parseShort(item[0]));
-                            if (it != null && item.length == 1) {
-                                InventoryServiceNew.gI().addItemBag(player, it);
-                                InventoryServiceNew.gI().sendItemBags(player);
-                                Service.gI().sendThongBao(player, "Đã nhận được " + it.template.name);
-                            } else if (it != null && item.length == 2 && Client.gI().getPlayer(String.valueOf(item[1])) == null) {
-                                it.quantity = Integer.parseInt(item[1]);
-                                InventoryServiceNew.gI().addItemBag(player, it);
-                                InventoryServiceNew.gI().sendItemBags(player);
-                                Service.gI().sendThongBao(player, "Đã nhận được x" + Integer.valueOf(item[1]) + " " + it.template.name);
-                            } else if (it != null && item.length == 2 && Client.gI().getPlayer(String.valueOf(item[1])) != null) {
-                                String name = String.valueOf(item[1]);
-                                InventoryServiceNew.gI().addItemBag(Client.gI().getPlayer(name), it);
-                                InventoryServiceNew.gI().sendItemBags(Client.gI().getPlayer(name));
-                                Service.gI().sendThongBao(player, "Đã buff " + it.template.name + " đến player " + name);
-                                Service.gI().sendThongBao(Client.gI().getPlayer(name), "Đã nhận được " + it.template.name);
-                            } else if (it != null && item.length == 3 && Client.gI().getPlayer(String.valueOf(item[2])) != null) {
-                                String name = String.valueOf(item[2]);
-                                it.quantity = Integer.parseInt(item[1]);
-                                InventoryServiceNew.gI().addItemBag(Client.gI().getPlayer(name), it);
-                                InventoryServiceNew.gI().sendItemBags(Client.gI().getPlayer(name));
-                                Service.gI().sendThongBao(player, "Đã buff x" + Integer.valueOf(item[1]) + " " + it.template.name + " đến player " + name);
-                                Service.gI().sendThongBao(Client.gI().getPlayer(name), "Đã nhận được x" + Integer.valueOf(item[1]) + " " + it.template.name);
-                            } else {
-                                Service.gI().sendThongBao(player, "Không tìm thấy player");
-                            }
-                        } else {
-                            Service.gI().sendThongBao(player, "Không tìm thấy item");
-                        }
-                    } catch (NumberFormatException e) {
-                        Service.gI().sendThongBao(player, "Không tìm thấy player");
+                }
+                if (text.startsWith("i")) {
+                    String[] parts = text.split(" ");
+                    if (parts.length >= 3) {
+                        short id = Short.parseShort(parts[1]);
+                        int quantity = Integer.parseInt(parts[2]);
+                        Item item = ItemService.gI().createNewItem(id, quantity);
+                        InventoryServiceNew.gI().addItemBag(player, item);
+                        InventoryServiceNew.gI().sendItemBags(player);
+                        Service.gI().sendThongBao(player, "Bạn nhận được " + item.template.name + " số lượng: " + quantity);
+                        return true;
+                    } else {
+                        Service.gI().sendThongBao(player, "Lỗi buff item");
+                        return false;
                     }
-
                 } else if (text.equals("buff")) {
                     Input.gI().createFormSenditem(player);
                 } else if (text.equals("ban")) {
@@ -230,6 +202,80 @@ public class Command {
                     player.pet.transform();
                 }
             }
+        }
+        //khaile modify
+        if (text.equals("tt")) {
+            StringBuilder info = new StringBuilder();
+            info.append("Thông tin nhân vật: ").append(player.name)
+                    .append("\nCảnh giới: ")
+                    .append(DoKiepService.gI().getRealNameCanhGioi(player, player.capTT));
+
+            // Chỉ hiển thị bình cảnh khi đã vào tu tiên (capTT > 0)
+            if (player.capTT > 0) {
+                info.append(" ").append(BinhCanhService.gI().getRealNameBinhCanh(player.capCS));
+            }
+
+            info.append("\nĐột Phá: ")
+                    .append(DotPhaService.gI().getRealNameDotPha(player.dotpha))
+                    .append("\n\nSức Mạnh: ").append(Util.getFormatNumber(player.nPoint.power))
+                    .append("\nChí Mạng: ").append(Util.getFormatNumber(player.nPoint.overflowcrit))
+                    .append("\nSức Đánh Chí Mạng: ")
+                    .append(Util.getFormatNumber(
+                            player.nPoint.tlDameCrit.stream().mapToInt(Integer::intValue).sum()
+                    ))
+                    .append("\n\nHp: ").append(Util.getFormatNumber(player.nPoint.hp))
+                    .append("/").append(Util.getFormatNumber(player.nPoint.hpMax))
+                    .append("\nKi: ").append(Util.getFormatNumber(player.nPoint.mp))
+                    .append("/").append(Util.getFormatNumber(player.nPoint.mpMax))
+                    .append("\nSức đánh: ").append(Util.getFormatNumber(player.nPoint.dame));
+
+            // ======= Né đòn ========
+            int tiLeNe = player.nPoint.tlNeDon;
+            info.append("\nTỉ lệ né: ").append(Util.getFormatNumber(tiLeNe));
+
+            // ======= Phản sát thương ========
+            int tiLePST = player.nPoint.tlPST;
+            if (player.dotpha == 2) {
+                tiLePST += 20;
+            }
+            info.append("\nPhản sát thương: ").append(Util.getFormatNumber(tiLePST));
+
+            Service.gI().sendThongBaoOK(player, info.toString());
+        }
+        if (text.equals("boss")) {
+            BossManager.gI().showListBoss(player);
+        }
+        if (text.startsWith("tanmach")) {
+            String[] parts = text.split(" ");
+            int times = 1; // Mặc định 1 lần nếu không có số
+            if (parts.length > 1) {
+                try {
+                    times = Integer.parseInt(parts[1]);
+                    times = Math.min(times, 1000); // Giới hạn tối đa 1000 lần
+                } catch (NumberFormatException e) {
+                    // Bỏ qua lỗi parse số
+                }
+            }
+            if (!BinhCanhService.gI().canProcess(player)) {
+                return false; // Dừng luôn, không tiếp tục process
+            }
+            BinhCanhService.gI().process(player, times);
+        }
+        if (text.startsWith("dokiep")) {
+            String[] parts = text.split(" ");
+            int times = 1; // Mặc định 1 lần nếu không có số
+            if (parts.length > 1) {
+                try {
+                    times = Integer.parseInt(parts[1]);
+                    times = Math.min(times, 1000); // Giới hạn tối đa 1000 lần
+                } catch (NumberFormatException e) {
+                    // Bỏ qua lỗi parse số
+                }
+            }
+            if (!DoKiepService.gI().canProcess(player)) {
+                return false;
+            }
+            DoKiepService.gI().process(player, times);
         }
         return false;
     }

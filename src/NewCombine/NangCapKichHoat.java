@@ -39,7 +39,7 @@ public class NangCapKichHoat {
                 }
             }
             player.combineNew.goldCombine = 1_000_000_000;
-            int goldCombie = player.combineNew.goldCombine;
+            long goldCombie = player.combineNew.goldCombine;
             if (trangbiThanLinh != null) {
                 String npcSay = "Sau khi cường hoá, sẽ được nâng cấp trang bị Huỷ Diệt thành trang bị Kích hoạt";
                 CombineServiceNew.gI().baHatMit.createOtherMenu(player, ConstNpc.MENU_START_COMBINE, npcSay,
@@ -54,7 +54,7 @@ public class NangCapKichHoat {
 
     public static void startCombine(Player player) {
         if (player.combineNew.itemsCombine.size() == 1) {
-            int gold = player.combineNew.goldCombine;
+            long gold = player.combineNew.goldCombine;
             if (player.inventory.gold < gold) {
                 Service.gI().sendThongBao(player, "Bạn không đủ vàng, còn thiếu " + Util.numberToMoney(gold - player.inventory.gold) + " vàng nữa");
                 Service.gI().sendMoney(player);

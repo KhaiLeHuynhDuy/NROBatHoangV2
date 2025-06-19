@@ -673,7 +673,7 @@ public class Manager {
                 itemTemp.leg = rs.getInt("leg");
                 ITEM_TEMPLATES.add(itemTemp);
             }
-            Logger.success("Load map item template thành công (" + ITEM_TEMPLATES.size() + ")\n");
+            Logger.success("Load item template thành công (" + ITEM_TEMPLATES.size() + ")\n");
 
             //load array head 2 frames
             ps = con.prepareStatement("select * from array_head_2_frames");

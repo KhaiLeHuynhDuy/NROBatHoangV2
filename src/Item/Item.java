@@ -153,6 +153,56 @@ public class Item {
         }
 
     }
+//khaile add
+
+    public boolean isTrucCoDanDuoc() {//so trung hau
+        if (this.template.id >= 1664 && this.template.id <= 1666) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+
+    public boolean isThienMaThach() {
+        if (this.template.id == 1707) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+
+    public boolean isLinhKhi() {
+        if (this.template.id == 1671) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+
+    public boolean isTanDan() {
+        if (this.template.id >= 1672 && this.template.id <= 1680) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+
+    public boolean isPhieuDoiNgoaiTrangVoCuc() {
+        if (this.template.id >= 1693 && this.template.id <= 1697) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+
+    public boolean isDaCheTaoBoi() {
+        if (this.template.id == 1566 || this.template.id == 1567) {
+            return true;
+        } else if (this.template.id == -1) {
+        }
+        return false;
+    }
+//end khaile add
 
     public boolean isDaPhaLeEpSao() {
         return template != null && (template.type == 30 || (template.id >= 14 && template.id <= 20));
@@ -452,6 +502,7 @@ public class Item {
                 return "";
         }
     }
+
     public boolean isSachTuyetKy() {
         return template.id == 1262 || template.id == 1264 || template.id == 1266;
     }
@@ -459,6 +510,7 @@ public class Item {
     public boolean isSachTuyetKy2() {
         return template.id == 1263 || template.id == 1265 || template.id == 1267;
     }
+
     public void subOptionParam(int id, int param) {
         for (int i = 0; i < this.itemOptions.size(); i++) {
             ItemOption itemOption = this.itemOptions.get(i);

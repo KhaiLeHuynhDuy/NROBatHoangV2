@@ -103,6 +103,7 @@ import Server.ServerManager;
 import Server.ServerNotify;
 import Server.attr.AttributeManager;
 import Services.AchievementService;
+import Services.DotPhaService;
 import Services.SkillService;
 import static Services.SubMenuService.LOI_CHUC;
 import The23rdMartialArtCongress.The23rdMartialArtCongressService;
@@ -132,6 +133,226 @@ public class NpcFactory {
     private NpcFactory() {
 
     }
+//khaile add
+
+    private static Npc DoaTien(int mapId, int status, int cx, int cy, int tempId, int avartar) {
+        return new Npc(mapId, status, cx, cy, tempId, avartar) {
+            @Override
+            public void openBaseMenu(Player player) {
+                if (canOpenNpc(player)) {
+                    if (this.mapId == 5) {
+                        createOtherMenu(player, 1,
+                                "Xin chào, ta có thể giúp cậu chế tạo trang bị mạnh mẽ hoặc luyện đan.",
+                                "Chế Tạo", "Đổi ngoại trang", "Luyện Đan", "Đột phá", "Luyện Chế Trúc Cơ Đan Dược");
+                    }
+                }
+            }
+
+            @Override
+            public void confirmMenu(Player player, int select) {
+                if (canOpenNpc(player)) {
+                    if (this.mapId == 5) {
+                        switch (player.iDMark.getIndexMenu()) {
+                            case 1: // Menu chính
+                                if (select == 0) { // Chế tạo
+                                    createOtherMenu(player, 2,
+                                            "Cậu muốn chế tạo loại trang bị nào?",
+                                            "Chế Tạo Vô Cực");
+                                } else if (select == 1) { //
+                                    createOtherMenu(player, 3,
+                                            "Cậu muốn đổi ngoại trang nào?",
+                                            "Ngoại trang Vô Cực");
+                                } else if (select == 2) { // Luyện Đan
+                                    createOtherMenu(player, 4,
+                                            "Cậu muốn luyện loại đan dược nào?",
+                                            "Đan Luyện Khí", "Trúc Cơ Đan");
+                                } else if (select == 3) { // dot pha
+                                    createOtherMenu(player, 5,
+                                            "Đột phá dành cho tu sĩ đã đạt max chỉ số gốc của Trúc Cơ Cảnh & yêu cầu cảnh giới là Cụ Linh",
+                                            "Pháp Tu", "Thể Tu", "Hồn Tu");
+                                } else if (select == 4) {
+                                    createOtherMenu(player, 6,
+                                            "Cậu muốn luyện loại đan dược nào?",
+                                            "Trúc Cơ Sơ Kỳ", "Trúc Cơ Trung Kỳ", "Trúc Cơ Hậu Kỳ");
+                                }
+                                break;
+
+                            case 2: // Chọn loại trang bị
+//                                if (select == 0) {
+//                                    createOtherMenu(player, 3,
+//                                            "Chọn vật phẩm muốn chế tạo:",
+//                                            "Áo Vô Cực", "Quần Vô Cực", "Găng Vô Cực", "Giày Vô Cực", "Nhẫn Vô Cực");
+//                                }
+                                CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_VO_CUC_TU_TAI);
+//                                else if (select == 1) {
+//                                    createOtherMenu(player, 4,
+//                                            "Chọn vật phẩm muốn chế tạo:",
+//                                            "Áo La Thiên", "Quần La Thiên", "Găng La Thiên", "Giày La Thiên", "Nhẫn La Thiên");
+//                                }
+                                break;
+
+                            case 3: // Chế tạo ngoại trang Vô Cực
+                                CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_NGOAI_TRANG_VO_CUC_TU_TAI);
+                                break;
+                            case 4: // Luyện đan
+                                switch (select) {
+                                    case 0:
+                                        CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_DAN_DUOC_LUYEN_KHI);
+                                        break;
+                                    case 1:
+                                        CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_TRUC_CO_DAN);
+                                        break;
+                                }
+                                break;
+                            case 5: // Menu chọn hướng đột phá
+                                // Hiển thị chi tiết từng hướng đột phá
+                                switch (select) {
+                                    case 0:
+                                        createOtherMenu(player, 8,
+                                                "Đột phá Pháp Tu\n"
+                                                + "Tiêu hao 1M Hồng ngọc\n"
+                                                + " - Tăng 3M SDG.\n"
+                                                + " - Tăng 6M HP KI\n"
+                                                + " - Tăng 15% Né chiêu",
+                                                "Xác nhận", "Hủy");
+                                        break;
+                                    case 1:
+                                        createOtherMenu(player, 9,
+                                                "Đột phá Thể Tu\n"
+                                                + "Tiêu hao 1M Hồng ngọc\n"
+                                                + " - Tăng 1M SDG.\n"
+                                                + " - Tăng 18M HP KI\n"
+                                                + " - Tăng 20% Phản sát thương",
+                                                "Xác nhận", "Hủy");
+                                        break;
+                                    case 2:
+                                        createOtherMenu(player, 10,
+                                                "Đột phá Hồn Tu\n"
+                                                + "Tiêu hao 250K COIN\n"
+                                                + " - Tăng 10M SDG.\n"
+                                                + " - Tăng 10M HP KI.\n"
+                                                + " - Được chế các loại đan từ cảnh giới Trúc Cơ trở lên.",
+                                                "Xác nhận", "Hủy");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+
+                            case 6: // luyện chế trúc cơ đan dược
+                                switch (select) {
+                                    case 0: // trúc cơ sơ kỳ
+                                        CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_TRUC_CO_SO);
+                                        break;
+                                    case 1: // trúc cơ trung kỳ
+                                        CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_TRUC_CO_TRUNG);
+                                        break;
+                                    case 2: // trúc cơ hậu kỳ
+                                        CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_TRUC_CO_HAU);
+                                        break;
+                                }
+                                break;
+
+                            case 8: // Menu xác nhận đột phá Pháp Tu
+                                if (select == 0) { // Xác nhận
+                                    DotPhaService.gI().thucHienDotPha(player, 0);
+                                } else if (select == 1) { // Hủy
+                                    createOtherMenu(player, 6,
+                                            "Đột phá dành cho tu sĩ đã đạt giới hạn của Trúc Cơ Cảnh",
+                                            "Pháp Tu", "Thể Tu", "Hồn Tu");
+                                }
+                                break;
+
+                            case 9: // Menu xác nhận đột phá Thể Tu
+                                if (select == 0) {
+                                    DotPhaService.gI().thucHienDotPha(player, 1);
+                                } else if (select == 1) {
+                                    createOtherMenu(player, 6,
+                                            "Đột phá dành cho tu sĩ đã đạt giới hạn của Trúc Cơ Cảnh",
+                                            "Pháp Tu", "Thể Tu", "Hồn Tu");
+                                }
+                                break;
+
+                            case 10: // Menu xác nhận đột phá Hồn Tu
+                                if (select == 0) {
+                                    DotPhaService.gI().thucHienDotPha(player, 2);
+                                } else if (select == 1) {
+                                    createOtherMenu(player, 6,
+                                            "Đột phá dành cho tu sĩ đã đạt giới hạn của Trúc Cơ Cảnh",
+                                            "Pháp Tu", "Thể Tu", "Hồn Tu");
+                                }
+                                break;
+                            case ConstNpc.MENU_START_COMBINE: // Xử lý kết hợp
+                                if (player.combineNew.typeCombine != -1) {
+                                    CombineServiceNew.gI().startCombine(player);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    public static Npc ThienMa(int mapId, int status, int cx, int cy, int tempId, int avartar) {
+        return new Npc(mapId, status, cx, cy, tempId, avartar) {
+            @Override
+            public void openBaseMenu(Player player) {
+                if (canOpenNpc(player)) {
+                    if (this.mapId == 5) {
+                        createOtherMenu(player, 1,
+                                "Xin chào, ta có thể giúp cậu chế tạo trang bị Thiên Ma.",
+                                "Chế Tạo", "Đi úp");
+                    }
+                }
+            }
+
+            @Override
+            public void confirmMenu(Player player, int select) {
+                if (canOpenNpc(player)) {
+                    if (this.mapId == 5) {
+                        switch (player.iDMark.getIndexMenu()) {
+                            case 1: // Menu chính
+                                if (select == 0) { // Chế tạo
+                                    createOtherMenu(player, 2,
+                                            "Hãy chọn loại trang bị muốn chế tạo:",
+                                            "Chế tạo Thiên Ma");
+                                } else if (select == 1) {
+                                    createOtherMenu(player, 3,
+                                            "Chọn map đêêêêê",
+                                            "Tầng 1", "Tầng 2", "Tầng 3");
+                                }
+                                break;
+
+                            case 2: // Chọn loại trang bị Thiên Ma
+                                CombineServiceNew.gI().openTabCombine(player, CombineServiceNew.CHE_TAO_THIEN_MA);
+                                break;
+                            case 3:
+                                switch (select) {
+                                    case 0:
+                                        ChangeMapService.gI().changeMapInYard(player, 204, -1, 552);
+                                        break;
+                                    case 1:
+                                        ChangeMapService.gI().changeMapInYard(player, 205, -1, 552);
+                                        break;
+                                    case 2:
+                                        ChangeMapService.gI().changeMapInYard(player, 206, -1, 552);
+                                        break;
+                                }
+
+                                break;
+                            case ConstNpc.MENU_START_COMBINE:
+                                if (player.combineNew.typeCombine != -1) {
+                                    CombineServiceNew.gI().startCombine(player);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        };
+    }
+//end khaile add
 
     private static Npc trungLinhThu(int mapId, int status, int cx, int cy, int tempId, int avartar) {
         return new Npc(mapId, status, cx, cy, tempId, avartar) {
@@ -5598,8 +5819,8 @@ public class NpcFactory {
         int avatar = Manager.NPC_TEMPLATES.get(tempId).avatar;
         try {
             switch (tempId) {
-//                case ConstNpc.UNKOWN:
-//                    return unkonw(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.DOA_TIEN:
+                    return DoaTien(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GHI_DANH:
                     return GhiDanh(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.TRUNG_LINH_THU:
@@ -5624,8 +5845,8 @@ public class NpcFactory {
                     return ongGohan_ongMoori_ongParagus(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BUNMA:
                     return bulmaQK(mapId, status, cx, cy, tempId, avatar);
-//                case ConstNpc.TOPPO:
-//                    return toppo(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.THIEN_MA:
+                    return ThienMa(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DUA_HAU:
                     return duahau(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DENDE:
